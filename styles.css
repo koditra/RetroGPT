@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('retroGPT/fonts/PressStart2P-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+html, body {
+    background-color: rgba(0, 0, 0, 0.744) !important;
+    color: #00ff66 !important;
+}
+
+* {
+    background-color: rgba(0, 0, 0, 0.744) !important;
+    color: #00ff66 !important;
+    font-family: 'Press Start 2P', monospace !important;
+    text-shadow: 0 0 5px #00ff66;
+}
+
+p, span, h1, h2, h3, h4, h5, h6 {
+    color: #00ff66 !important;
+    font-family: 'Press Start 2P', monospace !important;
+    text-shadow: 0 0 5px #00ff66;
+}
+
+button {
+    background-color: black !important;
+    border: 1px solid #00ff66 !important;
+    color: #00ff66 !important;
+    font-family: 'Press Start 2P', monospace !important;
+}

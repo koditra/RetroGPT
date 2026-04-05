@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "RetroGPT",
+    "version": "1.6.7",
+    "description": "Makes chatgpt into a retro themed terminal.",
+    "content_scripts": [
+        {
+            "matches": [
+              "*://chat.openai.com/*",
+              "*://chatgpt.com/*",
+              "*://www.chatgpt.com/*"
+            ],
+            "css": ["styles.css"]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["fonts/PressStart2P-Regular.ttf"],
+            "matches": ["<all_urls>"]
+        }
+    ]
+}
