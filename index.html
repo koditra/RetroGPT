@@ -1,159 +1,244 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>RetroGPT Installation</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Courier New", monospace;
-      background: radial-gradient(circle at top, #020617, #000000);
-      color: #00ffcc;
-      overflow-x: hidden;
-    }
-    .scanlines {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.03) 0px,
-        rgba(255,255,255,0.03) 1px,
-        transparent 2px,
-        transparent 4px
-      );
-      pointer-events: none;
-      z-index: 1;
-    }
-    .container {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-      margin: 60px auto;
-      padding: 30px;
-      border: 2px solid #00ffcc;
-      box-shadow: 0 0 25px #00ffcc;
-      background: rgba(0,0,0,0.85);
-    }
-    h1 {
-      text-align: center;
-      font-size: 40px;
-      letter-spacing: 3px;
-      margin-bottom: 10px;
-      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
-    }
-    .subtitle {
-      text-align: center;
-      color: #00ffaa;
-      margin-bottom: 40px;
-    }
-    .step {
-      margin-bottom: 40px;
-      padding: 20px;
-      border-left: 4px solid #00ffcc;
-      background: rgba(0,255,204,0.05);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .step:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 20px #00ffcc;
-    }
-    .step h2 {
-      margin: 0 0 10px;
-      color: #00ffff;
-      text-shadow: 0 0 8px #00ffff;
-    }
-    .step p {
-      margin: 10px 0;
-      line-height: 1.6;
-      color: #a7f3d0;
-    }
-    .image-slot {
-      margin-top: 15px;
-      height: 220px;
-      border: 2px dashed #00ffcc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #00ffaa;
-      font-size: 14px;
-      background: rgba(0,0,0,0.6);
-    }
-    .download {
-      display: block;
-      width: fit-content;
-      margin: 30px auto;
-      padding: 14px 24px;
-      color: #000;
-      background: #00ffcc;
-      text-decoration: none;
-      font-weight: bold;
-      letter-spacing: 1px;
-      box-shadow: 0 0 15px #00ffcc;
-      transition: all 0.2s;
-    }
-    .download:hover {
-      background: #00ffaa;
-      box-shadow: 0 0 25px #00ffaa;
-    }
-    footer {
-      text-align: center;
-      margin-top: 50px;
-      color: #00ffaa;
-      font-size: 14px;
-      opacity: 0.7;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>RetroGPT Installer</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: "Courier New", monospace;
+  background: black;
+  color: #00ffcc;
+  overflow: hidden;
+}
+
+/* Boot screen */
+#boot {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  padding: 20px;
+  white-space: pre-line;
+}
+
+.cursor {
+  display: inline-block;
+  width: 10px;
+  background: #00ffcc;
+  margin-left: 5px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {opacity: 0;}
+}
+
+/* Installer UI */
+#installer {
+  display: none;
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.window {
+  border: 2px solid #00ffcc;
+  box-shadow: 0 0 20px #00ffcc;
+  padding: 20px;
+}
+
+/* Progress bar */
+.progress-container {
+  margin-top: 20px;
+  border: 1px solid #00ffcc;
+  height: 20px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #00ffcc;
+  transition: width 0.3s;
+}
+
+/* Steps */
+.step {
+  display: none;
+  margin-top: 30px;
+}
+
+.image-slot img {
+  width: 100%;
+  border: 1px solid #00ffcc;
+  margin-top: 10px;
+}
+
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.lightbox img {
+  max-width:90%;
+  box-shadow:0 0 20px #00ffcc;
+}
+
+.lightbox.active {
+  display:flex;
+}
+</style>
 </head>
+
 <body>
-  <div class="scanlines"></div>
-  <div class="container">
-    <h1>RETROGPT</h1>
-    <div class="subtitle">INSTALLATION GUIDE • RELEASE 1.1.0</div>
 
-    <a class="download" href="https://github.com/koditra/RetroGPT/releases/tag/releases" target="_blank">
-      DOWNLOAD RELEASE 1.1.0
-    </a>
+<!-- BOOT SCREEN -->
+<div id="boot"></div>
 
-    <div class="step">
-      <h2>01 • DOWNLOAD</h2>
-      <p>Open the official release page and download version 1.1.0 of RetroGPT. Ensure the file is fully downloaded before continuing.</p>
-      <div class="image-slot">insert download screenshot</div>
+<!-- INSTALLER -->
+<div id="installer">
+  <div class="window">
+    <h2>RetroGPT Setup v1.1.0</h2>
+    <p>Initializing installation...</p>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="bar"></div>
     </div>
 
-    <div class="step">
-      <h2>02 • EXTRACT</h2>
-      <p>Locate the downloaded archive and extract it into a clean folder. Do not move individual files; keep the folder structure intact.</p>
-      <div class="image-slot">insert extraction screenshot</div>
+    <!-- STEPS -->
+    <div class="step" id="step1">
+      <h3>01 • DOWNLOAD</h3>
+      <p>Download the release package.</p>
+      <div class="image-slot" onclick="openLightbox()">
+        <img src="demo/demo.png">
+      </div>
     </div>
 
-    <div class="step">
-      <h2>03 • OPEN CHROME EXTENSIONS</h2>
-      <p>Launch Chrome and enter chrome://extensions/ in the address bar to access the extensions manager.</p>
-      <div class="image-slot">insert extensions page screenshot</div>
+    <div class="step" id="step2">
+      <h3>02 • EXTRACT</h3>
+      <p>Extract files into a folder.</p>
+      <div class="image-slot" onclick="openLightbox()">
+        <img src="demo/demo.png">
+      </div>
     </div>
 
-    <div class="step">
-      <h2>04 • ENABLE DEVELOPER MODE</h2>
-      <p>Toggle Developer Mode in the top right corner. This unlocks manual extension loading.</p>
-      <div class="image-slot">insert toggle screenshot</div>
+    <div class="step" id="step3">
+      <h3>03 • EXTENSIONS</h3>
+      <p>Open chrome://extensions/</p>
+      <div class="image-slot" onclick="openLightbox()">
+        <img src="demo/demo.png">
+      </div>
     </div>
 
-    <div class="step">
-      <h2>05 • LOAD UNPACKED</h2>
-      <p>Click the Load unpacked button and select the folder you extracted earlier.</p>
-      <div class="image-slot">insert load unpacked screenshot</div>
+    <div class="step" id="step4">
+      <h3>04 • DEV MODE</h3>
+      <p>Enable Developer Mode.</p>
+      <div class="image-slot" onclick="openLightbox()">
+        <img src="demo/demo.png">
+      </div>
     </div>
 
-    <div class="step">
-      <h2>06 • READY</h2>
-      <p>The extension will automatically apply once loaded and begin working immediately.</p>
-      <div class="image-slot">insert working extension screenshot</div>
+    <div class="step" id="step5">
+      <h3>05 • LOAD</h3>
+      <p>Click Load Unpacked.</p>
+      <div class="image-slot" onclick="openLightbox()">
+        <img src="demo/demo.png">
+      </div>
     </div>
 
-    <footer>
-      SYSTEM READY • RETROGPT ACTIVE
-    </footer>
+    <div class="step" id="step6">
+      <h3>06 • COMPLETE</h3>
+      <p>RetroGPT is now active.</p>
+      <div class="image-slot" onclick="openLightbox()">
+        <img src="demo/demo.png">
+      </div>
+    </div>
+
   </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img src="demo/demo.png">
+</div>
+
+<script>
+/* Boot typing effect */
+const bootText = `
+RetroGPT BIOS v1.1.0
+Copyright (C) Retro Systems
+
+Initializing memory... OK
+Loading modules... OK
+Starting installer...
+`;
+
+let i = 0;
+function typeBoot() {
+  if (i < bootText.length) {
+    document.getElementById("boot").innerHTML += bootText.charAt(i);
+    i++;
+    setTimeout(typeBoot, 20);
+  } else {
+    setTimeout(startInstaller, 800);
+  }
+}
+
+function startInstaller() {
+  document.getElementById("boot").style.display = "none";
+  document.getElementById("installer").style.display = "block";
+  runProgress();
+}
+
+/* Progress simulation */
+let progress = 0;
+function runProgress() {
+  let bar = document.getElementById("bar");
+
+  let interval = setInterval(() => {
+    progress += Math.random() * 15;
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(interval);
+      showSteps();
+    }
+    bar.style.width = progress + "%";
+  }, 400);
+}
+
+/* Reveal steps */
+function showSteps() {
+  let step = 1;
+  let interval = setInterval(() => {
+    let el = document.getElementById("step" + step);
+    if (el) {
+      el.style.display = "block";
+      step++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 600);
+}
+
+/* Lightbox */
+function openLightbox() {
+  document.getElementById("lightbox").classList.add("active");
+}
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("active");
+}
+
+typeBoot();
+</script>
+
 </body>
 </html>
