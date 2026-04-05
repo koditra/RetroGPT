@@ -2,8 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>RetroGPT Hacker Terminal Installer</title>
-
+<title>RetroGPT Installer</title>
 <style>
 body {
   margin: 0;
@@ -13,18 +12,19 @@ body {
   overflow-y: auto;
 }
 
+/* Boot screen top-left typing */
 #boot {
   width: 100%;
   height: 100vh;
   background: #001100;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 20px;
   white-space: pre-line;
   font-size: 18px;
   line-height: 1.4;
-  text-align: center;
 }
 
 .cursor {
@@ -37,20 +37,23 @@ body {
 
 @keyframes blink { 50% { opacity: 0; } }
 
+/* Installer container centered */
 #installer {
   display: none;
   padding: 30px;
   max-width: 900px;
-  margin: auto;
+  margin: 60px auto;
   background: rgba(0,17,0,0.95);
   border: 2px solid #00ff00;
   box-shadow: 0 0 25px #00ff00;
+  text-align: center;
 }
 
 .progress-container {
-  margin-top: 20px;
+  margin: 20px auto;
   border: 1px solid #00ff00;
   height: 20px;
+  width: 80%;
   background: #001100;
 }
 
@@ -126,7 +129,6 @@ body {
   max-width: 90%;
   max-height: 90%;
   box-shadow: 0 0 30px #00ff00;
-  transition: transform 0.3s ease;
 }
 
 .scanlines {
@@ -153,23 +155,23 @@ footer {
 }
 </style>
 </head>
-
 <body>
 <div class="scanlines"></div>
 
+<!-- Boot typing screen top-left -->
 <div id="boot">
   <div id="bootText"></div>
   <span class="cursor"></span>
 </div>
 
+<!-- Installer container centered -->
 <div id="installer">
-  <h2>RetroGPT Hacker Terminal Installer v1.1.0</h2>
-
+  <h2>RetroGPT Installer v1.1.0</h2>
   <div class="progress-container">
     <div class="progress-bar" id="bar"></div>
   </div>
 
-
+  <!-- Steps in correct order but slightly shuffled in HTML spacing -->
   <div class="step" id="step1">
     <h3>01 • DOWNLOAD</h3>
     <p>Download the release package.</p>
@@ -177,7 +179,6 @@ footer {
       <img src="demo/download.png">
     </div>
   </div>
-
 
   <div class="step" id="step3">
     <h3>03 • EXTENSIONS</h3>
@@ -187,7 +188,6 @@ footer {
     </div>
   </div>
 
-
   <div class="step" id="step2">
     <h3>02 • EXTRACT</h3>
     <p>Extract files into a folder.</p>
@@ -195,7 +195,6 @@ footer {
       <img src="demo/extract.png">
     </div>
   </div>
-
 
   <div class="step" id="step5">
     <h3>05 • LOAD</h3>
@@ -205,7 +204,6 @@ footer {
     </div>
   </div>
 
-
   <div class="step" id="step4">
     <h3>04 • DEV MODE</h3>
     <p>Enable Developer Mode.</p>
@@ -214,7 +212,6 @@ footer {
     </div>
   </div>
 
-
   <div class="step" id="step6">
     <h3>06 • COMPLETE</h3>
     <p>RetroGPT is now active.</p>
@@ -222,7 +219,6 @@ footer {
       <img src="demo/demo.png">
     </div>
   </div>
-
 </div>
 
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -238,7 +234,6 @@ Hacker terminal interface activated
 `;
 
 let i = 0;
-
 function typeBoot() {
   const bootEl = document.getElementById("bootText");
   if(i < bootText.length){
@@ -257,7 +252,6 @@ function startInstaller() {
 }
 
 let progress = 0;
-
 function runProgress() {
   const bar = document.getElementById("bar");
   const interval = setInterval(() => {
@@ -272,13 +266,16 @@ function runProgress() {
 }
 
 function showSteps() {
-  let step = 1;
+  const stepOrder = [1,2,3,4,5,6]; // display in correct order
+  let index = 0;
   const interval = setInterval(() => {
-    const el = document.getElementById("step"+step);
-    if(el){
-      el.classList.add("show");
-      step++;
-    } else clearInterval(interval);
+    if(index >= stepOrder.length){
+      clearInterval(interval);
+      return;
+    }
+    const el = document.getElementById("step" + stepOrder[index]);
+    if(el) el.classList.add("show");
+    index++;
   }, 500);
 }
 
@@ -295,6 +292,5 @@ function closeLightbox(){
 
 typeBoot();
 </script>
-
 </body>
 </html>
